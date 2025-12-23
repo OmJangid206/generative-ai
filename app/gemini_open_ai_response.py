@@ -1,0 +1,31 @@
+ChatCompletion(
+    id="RMDXaOzOCY2sz7IPmvmfwQw",
+    choices=[
+        Choice(
+            finish_reason="stop",
+            index=0,
+            logprobs=None,
+            message=ChatCompletionMessage(
+                content="The human mind processes information, generates thoughts and feelings, and controls behavior through a complex network of neural connections.\n",
+                refusal=None,
+                role="assistant",
+                annotations=None,
+                audio=None,
+                function_call=None,
+                tool_calls=None,
+            ),
+        )
+    ],
+    created=1758969925,
+    model="gemini-2.0-flash",
+    object="chat.completion",
+    service_tier=None,
+    system_fingerprint=None,
+    usage=CompletionUsage(
+        completion_tokens=23,
+        prompt_tokens=14,
+        total_tokens=37,
+        completion_tokens_details=None,
+        prompt_tokens_details=None,
+    ),
+)

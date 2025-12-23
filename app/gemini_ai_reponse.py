@@ -1,0 +1,25 @@
+sdk_http_response=HttpResponse(
+  headers=<dict len=11>
+) candidates=[Candidate(
+  content=Content(
+    parts=[
+      Part(
+        text='AI learns patterns from data to make decisions or predictions.'
+      ),
+    ],
+    role='model'
+  ),
+  finish_reason=<FinishReason.STOP: 'STOP'>,
+  index=0
+)] create_time=None model_version='gemini-2.5-flash' prompt_feedback=None response_id='SqTXaIOpH5jgz7IPjvn2sQo' usage_metadata=GenerateContentResponseUsageMetadata(
+  candidates_token_count=11,
+  prompt_token_count=9,
+  prompt_tokens_details=[
+    ModalityTokenCount(
+      modality=<MediaModality.TEXT: 'TEXT'>,
+      token_count=9
+    ),
+  ],
+  thoughts_token_count=950,
+  total_token_count=970
+) automatic_function_calling_history=[] parsed=None

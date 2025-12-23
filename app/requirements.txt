@@ -1,0 +1,5 @@
+openai=1.106.1
+python-dotenv=1.1.1
+transformers==4.56.1 
+torch==2.8.0
+tiktoken==0.11.0
