@@ -1,3 +1,0 @@
-learn python.||done
-take challenges in python||not_done
-learn file || handling in python||not_done
