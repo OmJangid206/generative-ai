@@ -1,13 +1,18 @@
-import requests
+import os
 import json
+import requests
 from pydantic import BaseModel, Field
 from typing import Optional
 from google import genai
 from google.genai import types
+from dotenv import load_dotenv
+load_dotenv()
+
 # export GOOGLE_APPLICATION_CREDENTIALS="/home/moglix/Desktop/moglix/Personal-Project/generative-ai/app/service_account.json"
+# export GOOGLE_APPLICATION_CREDENTIALS="/Users/omprakashjangid/Desktop/Personal-Project/generative-ai/app/service_account.json"
 
 # ---------------- CONFIG ----------------
-PROJECT_ID = "moglix-generative-ai"
+PROJECT_ID = os.environ['PROJECT_ID']
 LOCATION = "us-central1"
 MODEL_NAME = "gemini-2.5-flash"
 
@@ -60,7 +65,6 @@ available_tool = {
     "get_weather": get_weather
 }
 
-
 class OutputFormat(BaseModel):
     step: str = Field(..., description="The ID of the step. Example: PLAN, OUTPUT, TOOL, ete")
     content: Optional[str] = Field(..., description="The optional string content for the step")
@@ -76,6 +80,9 @@ while True:
 
     while True:
         prompt = SYSTEM_PROMPT + "\n" + "\n".join(message_history)
+        # print("-----------------")
+        # print(f"prompt: {prompt}")
+        # print("-----------------")
 
         response = client.models.generate_content(
             model=MODEL_NAME,
