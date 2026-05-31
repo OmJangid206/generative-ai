@@ -1,9 +1,14 @@
+# Chroma db references
+# http://docs.trychroma.com/docs/overview/getting-started
+# https://docs.trychroma.com/docs/run-chroma/clients#in-memory-client
+# http://docs.trychroma.com/docs/run-chroma/client-server
+
 import os
-from dotenv import load_dotenv
-from openai import OpenAI
-# from sentence_transformers import SentenceTransformer
-import chromadb
-from pypdf import PdfReader
+from dotenv import load_dotenv # type: ignore
+from openai import OpenAI # type: ignore
+from sentence_transformers import SentenceTransformer # type: ignore
+import chromadb  # type: ignore
+from pypdf import PdfReader # type: ignore
 
 # Load ENV
 load_dotenv()
@@ -17,18 +22,19 @@ client = OpenAI(
 MODEL= "google/gemini-2.0-flash-001"
 EMBED_MODEL = "all-MiniLM-L6-v2"
 
-# # Embedding Model
-# embed_model = SentenceTransformer(EMBED_MODEL)
+# Embedding Model
+embed_model = SentenceTransformer(EMBED_MODEL)
 
-
-
-# Chroma DB
+# Chroma DB (in-memory)
 # chroma_client = chromadb.Client()
-chroma_client = chromadb.PersistentClient(
-    path="./chroma_db"
-)
 
-# Collection
+# Chroma DB (local persistent storage)
+# chroma_client = chromadb.PersistentClient(path="./chroma_db")
+
+# Chroma DB (Client Server)
+chroma_client = chromadb.HttpClient(host='localhost', port=8000)
+
+# Create Collection
 # collection = chroma_client.create_collection(
 #     name="multi_pdf_collection"
 # )
@@ -36,55 +42,67 @@ collection = chroma_client.get_or_create_collection(
     name="multi_pdf_collection"
 )
 
+print("Before:", collection.count())
+
 # Read PDFs
-# PDF_FOLDER = "pdfs"
+PDF_FOLDER = "pdfs"
 
-# documents = []
-# ids = []
-# metadatas = []
-# chunk_id = 0
+documents = []
+ids = []
+metadatas = []
+chunk_id = 0
 
-# for file in os.listdir(PDF_FOLDER):
+for file in os.listdir(PDF_FOLDER):
     
-#     if not file.endswith("pdf"):
-#         continue
+    if not file.endswith("pdf"):
+        continue
     
-#     pdf_path = os.path.join(PDF_FOLDER, file)
-#     print(f"Loading {file}")
+    pdf_path = os.path.join(PDF_FOLDER, file)
+    print(f"Loading {file}")
     
-#     reader = PdfReader(pdf_path)
-#     full_text = ""
+    reader = PdfReader(pdf_path)
+    full_text = ""
     
-#     for page in reader.pages:
+    for page in reader.pages:
         
-#         text = page.extract_text()
-#         if text:
-#             full_text += text + "\n"
+        text = page.extract_text()
+        if text:
+            full_text += text + "\n"
         
-#     # Chunking
-#     chunk_size = 500
-#     for i in range(0, len(full_text), chunk_size):
-#         chunk = full_text[i:i+chunk_size]
-#         documents.append(chunk)
-#         ids.append(str(chunk_id))
+    # Chunking
+    chunk_size = 500
+    for i in range(0, len(full_text), chunk_size):
+        chunk = full_text[i:i+chunk_size]
+        documents.append(chunk)
+        ids.append(str(chunk_id))
         
-#         metadatas.append({"source": file})
-#         chunk_id += 1
+        metadatas.append({"source": file})
+        chunk_id += 1
 
-# # Store chunks in db
-# collection.add(
-#     documents=documents,
-#     ids=ids,
-#     metadatas=metadatas
-# )
+embeddings = embed_model.encode(
+    documents
+).tolist()
 
-# # print(f"Total Chunks: {len(documents)}")
-# print(collection.count())
-# # print(collection.get())
-# data = collection.get(include=["embeddings", "documents", "metadatas"])
-# # print(data)
+# Store chunks in db
+collection.add(
+    documents=documents,
+    embeddings=embeddings,
+    ids=ids,
+    metadatas=metadatas
+)
+
+# print(f"Total Chunks: {len(documents)}")
+# print("After:", collection.count())
+# data = collection.get()
+# print(data["ids"])
+data = collection.get(include=["embeddings", "documents", "metadatas"])
+print(data)
 # print(data.keys())
+# print(chroma_client.list_collections())
 
+
+# ---------------------------------------------------
+# ---------------------------------------------------
 # Chat Bot
 print("Multi PDF chatbot Started")
 print("Type exit to stop\n")
@@ -97,9 +115,14 @@ while True:
         print("Chat-bot exit.")
         break
 
+    query_embedding = embed_model.encode(
+        user_query
+    ).tolist()
+
     # Retrieve top chunks
     results = collection.query(
-        query_texts=[user_query],
+        # query_texts=[user_query],
+        query_embeddings=[query_embedding],
         n_results=5
     )
     
@@ -158,3 +181,7 @@ while True:
 
     except Exception as err:
         print(f"Error: {str(err)}")
+
+
+# # Run Chroma DB Client server
+# # chroma run --host 0.0.0.0 --port 8000
