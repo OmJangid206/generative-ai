@@ -13,31 +13,33 @@ client = OpenAI(
 )
 
 # System Prompt for AI Chatbot
-
 SYSTEM_PROMPT = """
     You are a helpful AI chatbot.
     Answer user questions clearly and simply.
 """
 
-messages = [
-    {
-        "role":"system",
-        "content": SYSTEM_PROMPT
-    }
-]
+messages = [{
+    "role":"system",
+    "content": SYSTEM_PROMPT
+}]
 
 print(f"\n Chatbot started (type 'exit' to stop)\n")
+
+# Choose Any Model
+OPEN_AI_MODEL = "openai/gpt-4o-mini"
+GEMINI_MODEL = "google/gemini-2.0-flash-001"
+CLAUDE_MODEL = "anthropic/claude-3.5-sonnet"
+GROQ_MODEL = "meta-llama/llama-3.3-70b-instruct"
 
 while True:
     
     user_input = input("ask anything: ")
     
-    
     if user_input.lower() == "exit":
         print("Chat ended.")
         break
     
-    # Add  user message
+    # Add user message
     messages.append({
         "role": "user",
         "content": user_input
@@ -45,7 +47,7 @@ while True:
     
     # Get response from model
     response = client.chat.completions.create(
-        model="openai/gpt-4o-mini",
+        model=OPEN_AI_MODEL,
         messages=messages
     )
     
