@@ -1,34 +1,26 @@
 # Level 1 — LLM Fundamentals
 # 1. Basic Chatbot
-
 # Already done ✅
 
 # 2. Streaming Chatbot
-
 # Already done ✅
 
 # 3. Memory Chatbot
-
 # Already done ✅
 
 # 4. PDF Chatbot
-
 # Already done ✅
 
-# 5. Multi-PDF Chatbot
-
+# 5. Multi-PDF Chatbot ✅
 # Upload multiple PDFs and answer across all of them.
 
-# 6. Website Chatbot
-
+# 6. Website Chatbot ✅
 # Give URL → scrape content → ask questions.
 
-# 7. YouTube Chatbot
-
+# 7. YouTube Chatbot ✅
 # Video URL → transcript → Q&A.
 
 # 8. Resume Analyzer
-
 # Upload resume → strengths, weaknesses, ATS score.
 
 # 9. Cover Letter Generator
