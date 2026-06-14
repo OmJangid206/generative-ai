@@ -1,0 +1,13 @@
+Project Phoenix Notes
+
+Project Start Date: July 1, 2025
+Project Manager: Sarah Johnson
+Budget: $50,000
+
+Key Tasks:
+1. Migrate legacy systems to cloud.
+2. Train employees on new platform.
+3. Complete security audit by September.
+
+Risk:
+Data migration delays may impact timeline.
