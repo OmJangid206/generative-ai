@@ -32,14 +32,14 @@
 # Level 2 — RAG Projects
 # These are important because most companies use RAG.
 
-# 11. Local RAG
+# 11. Local RAG ✅
 # PDF → Chunking → Embeddings → Vector DB → Retrieval.
 # Use:
 # LangChain
 # ChromaDB
 # Sentence Transformers
 
-# 12. Multi-Document RAG
+# 12. Multi-Document RAG ✅
 # Search across:
 # PDFs
 # DOCX
